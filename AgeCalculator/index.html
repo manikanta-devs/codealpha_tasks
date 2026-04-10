@@ -1,1 +1,1654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Age Calculator Pro — Discover Your Story</title>
+<meta name="description" content="The most comprehensive age calculator. Discover your exact age, generation, zodiac, numerology, life stats, milestones and more."/>
+<meta property="og:title" content="Age Calculator Pro"/>
+<meta property="og:description" content="Discover your exact age, generation, zodiac, numerology, life stats and milestones."/>
+<meta property="og:type" content="website"/>
+<meta name="theme-color" content="#080a12"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400;1,9..144,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+/* ─────────────────────────────────────────────
+   RESET & BASE
+───────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080a12;
+  --bg1:#0d1020;
+  --bg2:#121628;
+  --surf:#161b2e;
+  --surf2:#1c2338;
+  --surf3:#232b42;
+  --border:rgba(255,255,255,.06);
+  --border-h:rgba(255,255,255,.12);
+  --border-g:rgba(212,175,100,.2);
+  --gold:#d4af64;
+  --gold-b:#e8c97a;
+  --gold-dim:rgba(212,175,100,.1);
+  --gold-glow:rgba(212,175,100,.15);
+  --silver:#a8b4c8;
+  --text:#eef0f6;
+  --text2:#8b95aa;
+  --text3:#525c70;
+  --green:#4ade80;
+  --green-dim:rgba(74,222,128,.1);
+  --red:#f87171;
+  --red-dim:rgba(248,113,113,.1);
+  --blue:#60a5fa;
+  --blue-dim:rgba(96,165,250,.1);
+  --r:18px;--r-sm:12px;
+  --font-display:'Fraunces',Georgia,serif;
+  --font-body:'DM Sans',system-ui,sans-serif;
+  --ease-spring:cubic-bezier(.16,1,.3,1);
+  --ease-out:cubic-bezier(.25,.46,.45,.94);
+}
+html{scroll-behavior:smooth;}
+body{
+  min-height:100vh;background:var(--bg);color:var(--text);
+  font-family:var(--font-body);font-size:15px;line-height:1.6;
+  overflow-x:hidden;position:relative;
+}
 
+/* Grain texture overlay */
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  background-size:200px;opacity:.4;mix-blend-mode:overlay;
+}
+/* Radial glow meshes */
+body::after{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 900px 600px at 20% -10%,rgba(212,175,100,.05) 0%,transparent 60%),
+    radial-gradient(ellipse 700px 500px at 85% 110%,rgba(96,165,250,.04) 0%,transparent 60%),
+    radial-gradient(ellipse 500px 400px at 50% 50%,rgba(212,175,100,.02) 0%,transparent 70%);
+}
+
+/* ─────────────────────────────────────────────
+   LAYOUT
+───────────────────────────────────────────── */
+.page{position:relative;z-index:1;width:100%;max-width:1000px;margin:0 auto;padding:0 20px;}
+section{padding:0 0 80px;}
+
+/* ─────────────────────────────────────────────
+   NAVBAR
+───────────────────────────────────────────── */
+nav{
+  position:sticky;top:0;z-index:100;
+  padding:14px 20px;
+  background:rgba(8,10,18,.8);backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);
+}
+.nav-inner{
+  max-width:1000px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-logo{
+  display:flex;align-items:center;gap:10px;
+  text-decoration:none;
+}
+.nav-logo-mark{
+  width:32px;height:32px;border-radius:9px;
+  background:linear-gradient(135deg,rgba(212,175,100,.25),rgba(212,175,100,.06));
+  border:1px solid var(--border-g);
+  display:flex;align-items:center;justify-content:center;font-size:.95rem;
+  box-shadow:0 0 20px rgba(212,175,100,.12);
+}
+.nav-logo-text{
+  font-family:var(--font-display);font-size:1.05rem;font-weight:600;
+  color:var(--text);letter-spacing:-.01em;
+}
+.nav-logo-text span{color:var(--gold);}
+.nav-pill{
+  font-size:10px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--text2);padding:5px 12px;border-radius:50px;
+  border:1px solid var(--border);background:var(--surf);
+}
+
+/* ─────────────────────────────────────────────
+   HERO
+───────────────────────────────────────────── */
+.hero{
+  padding:80px 0 60px;
+  text-align:center;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:10px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;
+  color:var(--gold);border:1px solid var(--border-g);
+  background:var(--gold-dim);border-radius:50px;
+  padding:6px 16px;margin-bottom:28px;
+  animation:fadeDown .6s var(--ease-spring) both;
+}
+.hero-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold);animation:pulse 2s ease infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+
+.hero h1{
+  font-family:var(--font-display);font-weight:300;
+  font-size:clamp(3rem,9vw,6.5rem);line-height:1.0;
+  letter-spacing:-.04em;
+  color:var(--text);
+  animation:fadeDown .7s .05s var(--ease-spring) both;
+}
+.hero h1 em{font-style:italic;color:var(--gold);}
+.hero h1 .line2{display:block;font-weight:600;}
+
+.hero-sub{
+  margin-top:16px;font-size:1rem;color:var(--text2);
+  font-weight:300;max-width:480px;margin-inline:auto;
+  animation:fadeDown .7s .1s var(--ease-spring) both;
+}
+
+/* ─────────────────────────────────────────────
+   INPUT CARD
+───────────────────────────────────────────── */
+.input-section{
+  margin-top:48px;
+  animation:fadeUp .8s .15s var(--ease-spring) both;
+}
+.input-card{
+  background:var(--surf);
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:36px;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.02),
+    0 32px 80px rgba(0,0,0,.5),
+    0 0 60px rgba(212,175,100,.03);
+  position:relative;overflow:hidden;
+}
+.input-card::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(135deg,rgba(212,175,100,.03) 0%,transparent 50%);
+}
+
+.input-label{
+  font-size:10px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:20px;
+  display:flex;align-items:center;gap:8px;
+}
+.input-label::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--border-g),transparent);}
+
+.date-grid{display:grid;grid-template-columns:1fr 1fr 1.5fr;gap:12px;margin-bottom:20px;}
+.field{display:flex;flex-direction:column;gap:8px;}
+.field label{font-size:10px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--text2);}
+.field input{
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--border);
+  border-radius:14px;
+  color:var(--text);
+  font-family:var(--font-display);
+  font-size:clamp(1.6rem,5vw,2.2rem);
+  font-weight:400;
+  padding:16px 12px;
+  text-align:center;
+  width:100%;outline:none;
+  transition:border-color .25s,background .25s,box-shadow .25s;
+  -moz-appearance:textfield;
+  letter-spacing:-.02em;
+}
+.field input::-webkit-outer-spin-button,
+.field input::-webkit-inner-spin-button{-webkit-appearance:none;}
+.field input::placeholder{color:var(--text3);font-family:var(--font-body);font-size:1.1rem;}
+.field input:focus{
+  border-color:var(--gold);
+  background:var(--gold-dim);
+  box-shadow:0 0 0 4px rgba(212,175,100,.08),0 0 30px rgba(212,175,100,.06);
+}
+.field input.err{
+  border-color:var(--red)!important;
+  box-shadow:0 0 0 4px rgba(248,113,113,.1)!important;
+}
+.err-msg{
+  min-height:20px;font-size:12px;font-weight:500;
+  color:var(--red);margin-bottom:16px;
+  display:flex;align-items:center;gap:6px;
+}
+
+.calc-btn{
+  width:100%;padding:18px;border:none;border-radius:16px;
+  background:linear-gradient(135deg,#c9a94a 0%,#d4af64 35%,#b8962e 100%);
+  color:#0d0f1a;font-family:var(--font-body);font-size:13px;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;cursor:pointer;
+  position:relative;overflow:hidden;
+  box-shadow:0 4px 28px rgba(212,175,100,.35),0 0 0 1px rgba(255,255,255,.12) inset;
+  transition:transform .2s var(--ease-spring),box-shadow .2s;
+}
+.calc-btn::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.2) 0%,rgba(255,255,255,0) 50%);
+}
+.calc-btn:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(212,175,100,.5);}
+.calc-btn:active{transform:translateY(0);}
+.calc-btn .btn-icon{margin-right:8px;font-size:1rem;}
+
+/* ─────────────────────────────────────────────
+   RESULTS WRAPPER
+───────────────────────────────────────────── */
+#results{display:none;}
+#results.visible{display:block;}
+
+/* ─────────────────────────────────────────────
+   SECTION HEADERS
+───────────────────────────────────────────── */
+.sec-header{
+  display:flex;align-items:center;gap:14px;
+  margin-bottom:20px;
+}
+.sec-icon{
+  width:38px;height:38px;border-radius:11px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;
+  background:var(--surf2);border:1px solid var(--border);
+}
+.sec-title{font-family:var(--font-display);font-size:1.4rem;font-weight:600;letter-spacing:-.02em;}
+.sec-sub{font-size:12px;color:var(--text2);margin-top:1px;font-weight:300;}
+.sec-line{flex:1;height:1px;background:linear-gradient(to right,var(--border),transparent);}
+
+/* ─────────────────────────────────────────────
+   HERO RESULT — BIG NUMBERS
+───────────────────────────────────────────── */
+.age-hero{
+  background:linear-gradient(135deg,#0e1426 0%,#131a30 100%);
+  border:1px solid rgba(212,175,100,.18);
+  border-radius:24px;
+  padding:48px 32px;
+  text-align:center;
+  position:relative;overflow:hidden;
+  margin-bottom:14px;
+  box-shadow:0 0 0 1px rgba(255,255,255,.03),0 40px 80px rgba(0,0,0,.5);
+  animation:fadeUp .6s .0s var(--ease-spring) both;
+}
+.age-hero::before{
+  content:'';position:absolute;top:-120px;left:50%;transform:translateX(-50%);
+  width:500px;height:250px;
+  background:radial-gradient(ellipse,rgba(212,175,100,.08) 0%,transparent 70%);
+  pointer-events:none;
+}
+.age-hero-label{
+  font-size:10px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:32px;
+}
+.age-nums{display:flex;justify-content:center;align-items:flex-end;gap:0;}
+.age-unit{
+  padding:0 clamp(20px,6vw,56px);position:relative;
+  display:flex;flex-direction:column;align-items:center;
+}
+.age-unit:not(:last-child)::after{
+  content:'';position:absolute;right:0;top:8%;height:84%;
+  width:1px;background:rgba(212,175,100,.12);
+}
+.age-num{
+  font-family:var(--font-display);
+  font-size:clamp(4.5rem,15vw,8.5rem);
+  font-weight:600;line-height:.95;
+  letter-spacing:-.05em;color:#fff;
+  text-shadow:0 0 80px rgba(212,175,100,.25);
+}
+.age-unit-lbl{
+  font-size:10px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--text2);margin-top:14px;
+}
+
+.age-summary{
+  margin-top:28px;font-family:var(--font-display);
+  font-size:clamp(1rem,3vw,1.35rem);font-weight:300;font-style:italic;
+  color:var(--text2);
+}
+.age-summary strong{color:var(--gold);font-weight:600;font-style:normal;}
+
+/* ─────────────────────────────────────────────
+   LIVE TICKER
+───────────────────────────────────────────── */
+.live-card{
+  background:var(--surf);border:1px solid var(--border);border-radius:var(--r);
+  display:grid;grid-template-columns:repeat(3,1fr);
+  margin-bottom:14px;overflow:hidden;
+  animation:fadeUp .6s .05s var(--ease-spring) both;
+}
+.live-unit{
+  padding:22px 16px;text-align:center;position:relative;
+}
+.live-unit:not(:last-child)::after{
+  content:'';position:absolute;right:0;top:15%;height:70%;
+  width:1px;background:var(--border);
+}
+.live-badge{
+  position:absolute;top:12px;right:12px;
+  display:flex;align-items:center;gap:4px;
+  font-size:8px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--green);background:var(--green-dim);
+  border:1px solid rgba(74,222,128,.18);border-radius:50px;padding:3px 8px;
+}
+.live-badge-dot{width:4px;height:4px;border-radius:50%;background:var(--green);animation:pulse 1s infinite;}
+.live-num{
+  font-family:var(--font-display);
+  font-size:clamp(1.4rem,4.5vw,2.6rem);
+  color:var(--gold);line-height:1;
+  font-variant-numeric:tabular-nums;letter-spacing:-.02em;
+}
+.live-lbl{font-size:9px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--text2);margin-top:7px;}
+
+/* ─────────────────────────────────────────────
+   GRID HELPERS
+───────────────────────────────────────────── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+
+/* Generic card */
+.card{
+  background:var(--surf);border:1px solid var(--border);border-radius:var(--r);
+  padding:22px;
+  transition:border-color .25s,transform .25s,box-shadow .25s;
+}
+.card:hover{border-color:var(--border-h);transform:translateY(-2px);box-shadow:0 12px 36px rgba(0,0,0,.35);}
+
+/* Stat tile */
+.stat-tile{
+  background:var(--surf);border:1px solid var(--border);border-radius:var(--r);
+  padding:22px 14px;text-align:center;
+  transition:border-color .25s,transform .25s;
+}
+.stat-tile:hover{border-color:var(--border-h);transform:translateY(-2px);}
+.stat-tile-icon{font-size:1.6rem;margin-bottom:10px;display:block;}
+.stat-tile-num{
+  font-family:var(--font-display);font-size:clamp(1.1rem,3.5vw,1.7rem);
+  color:var(--text);line-height:1;letter-spacing:-.02em;margin-bottom:6px;
+}
+.stat-tile-lbl{font-size:9px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--text2);}
+
+/* Info tile */
+.info-tile{
+  background:var(--surf);border:1px solid var(--border);border-radius:var(--r);
+  padding:22px 20px;display:flex;align-items:center;gap:16px;
+  transition:border-color .25s,transform .25s;
+}
+.info-tile:hover{border-color:var(--border-h);transform:translateY(-2px);}
+.info-tile-icon{
+  flex-shrink:0;width:52px;height:52px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;font-size:1.6rem;
+  background:var(--surf2);border:1px solid var(--border);
+}
+.info-tile-lbl{font-size:9px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--text2);margin-bottom:5px;}
+.info-tile-val{font-size:15px;font-weight:600;color:var(--text);line-height:1.2;}
+.info-tile-sub{font-size:11px;color:var(--text2);margin-top:3px;font-weight:300;}
+
+/* ─────────────────────────────────────────────
+   GENERATION CARD (special)
+───────────────────────────────────────────── */
+.gen-card{
+  border-radius:var(--r);overflow:hidden;
+  border:1px solid var(--border-g);
+  box-shadow:0 0 50px rgba(212,175,100,.05);
+}
+.gen-header{
+  padding:28px 28px 22px;
+  background:linear-gradient(135deg,rgba(212,175,100,.1) 0%,rgba(212,175,100,.04) 100%);
+  border-bottom:1px solid var(--border-g);
+}
+.gen-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:9px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--gold);background:var(--gold-dim);border:1px solid var(--border-g);
+  border-radius:50px;padding:4px 12px;margin-bottom:12px;
+}
+.gen-name{
+  font-family:var(--font-display);font-size:clamp(1.8rem,5vw,2.8rem);
+  font-weight:600;letter-spacing:-.03em;color:var(--text);
+  margin-bottom:4px;
+}
+.gen-range{font-size:12px;color:var(--text2);font-weight:300;letter-spacing:.04em;}
+.gen-body{padding:24px 28px;background:var(--surf);}
+.gen-description{font-size:14px;color:var(--text2);line-height:1.75;margin-bottom:18px;font-weight:300;}
+.gen-traits{display:flex;flex-wrap:wrap;gap:7px;}
+.gen-trait{
+  font-size:10px;font-weight:500;letter-spacing:.08em;
+  padding:5px 12px;border-radius:50px;
+  background:var(--surf2);border:1px solid var(--border);
+  color:var(--text2);transition:border-color .2s;
+}
+.gen-trait:hover{border-color:var(--gold);color:var(--gold);}
+.gen-famous{margin-top:18px;padding-top:18px;border-top:1px solid var(--border);}
+.gen-famous-title{font-size:10px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--text2);margin-bottom:10px;}
+.gen-famous-list{display:flex;flex-wrap:wrap;gap:7px;}
+.gen-famous-item{
+  font-size:11px;font-weight:500;
+  padding:5px 12px;border-radius:50px;
+  background:var(--surf3);border:1px solid var(--border);
+  color:var(--text);
+}
+
+/* ─────────────────────────────────────────────
+   ZODIAC CARD
+───────────────────────────────────────────── */
+.zodiac-card{
+  background:var(--surf);border:1px solid var(--border);border-radius:var(--r);
+  padding:24px;
+}
+.zodiac-top{display:flex;align-items:center;gap:16px;margin-bottom:16px;}
+.zodiac-symbol{
+  font-size:2.6rem;width:64px;height:64px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--surf2);border-radius:16px;border:1px solid var(--border);
+  flex-shrink:0;
+}
+.zodiac-name{font-family:var(--font-display);font-size:1.5rem;font-weight:600;letter-spacing:-.02em;}
+.zodiac-dates{font-size:11px;color:var(--text2);font-weight:300;margin-top:3px;}
+.zodiac-planet{font-size:11px;color:var(--gold);margin-top:4px;}
+.zodiac-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+.zodiac-tag{font-size:9px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:50px;background:var(--surf2);border:1px solid var(--border);color:var(--text2);}
+.zodiac-compat{margin-top:14px;padding-top:14px;border-top:1px solid var(--border);}
+.zodiac-compat-title{font-size:9px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--text2);margin-bottom:8px;}
+.zodiac-compat-list{font-size:13px;font-weight:500;color:var(--text);}
+
+/* ─────────────────────────────────────────────
+   NUMEROLOGY
+───────────────────────────────────────────── */
+.num-card{
+  background:var(--surf);border:1px solid var(--border);border-radius:var(--r);
+  padding:24px;text-align:center;
+}
+.num-big{
+  font-family:var(--font-display);
+  font-size:clamp(3.5rem,12vw,6rem);
+  font-weight:600;color:var(--gold);
+  line-height:1;letter-spacing:-.04em;
+  text-shadow:0 0 50px rgba(212,175,100,.3);
+  margin-bottom:8px;
+}
+.num-title{font-size:10px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--text2);}
+.num-desc{font-size:13px;color:var(--text2);margin-top:12px;line-height:1.65;font-weight:300;}
+
+/* ─────────────────────────────────────────────
+   LIFE STATS
+───────────────────────────────────────────── */
+.life-tile{
+  background:var(--surf);border:1px solid var(--border);border-radius:var(--r);
+  padding:20px 12px;text-align:center;
+  transition:border-color .25s,transform .25s;
+}
+.life-tile:hover{border-color:rgba(212,175,100,.3);transform:translateY(-2px);}
+.life-tile-icon{font-size:1.3rem;margin-bottom:8px;display:block;}
+.life-tile-num{
+  font-family:var(--font-display);
+  font-size:clamp(.9rem,2.8vw,1.25rem);
+  color:var(--gold);line-height:1;margin-bottom:5px;letter-spacing:-.01em;
+}
+.life-tile-lbl{font-size:8px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--text2);}
+
+/* ─────────────────────────────────────────────
+   PROGRESS
+───────────────────────────────────────────── */
+.prog-card{
+  background:var(--surf);border:1px solid var(--border);border-radius:var(--r);
+  padding:28px;
+}
+.prog-row{margin-bottom:20px;}
+.prog-row:last-child{margin-bottom:0;}
+.prog-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;}
+.prog-label{font-size:12px;font-weight:500;color:var(--text2);letter-spacing:.04em;}
+.prog-pct{font-family:var(--font-display);font-size:1.6rem;color:var(--gold);letter-spacing:-.03em;}
+.prog-track{height:6px;background:rgba(255,255,255,.06);border-radius:50px;overflow:hidden;}
+.prog-fill{
+  height:100%;border-radius:50px;
+  transition:width 1.4s var(--ease-spring);
+  background:linear-gradient(90deg,var(--gold),#e8c97a);
+}
+.prog-note{margin-top:10px;font-size:12px;color:var(--text2);font-weight:300;line-height:1.6;}
+
+/* ─────────────────────────────────────────────
+   MILESTONES
+───────────────────────────────────────────── */
+.ms-list{display:flex;flex-direction:column;gap:8px;}
+.ms-item{
+  display:flex;align-items:center;gap:16px;
+  padding:14px 20px;border-radius:var(--r-sm);
+  border:1px solid var(--border);background:var(--surf);
+  transition:border-color .2s,background .2s;
+}
+.ms-item:hover{background:var(--surf2);border-color:var(--border-h);}
+.ms-item.past{opacity:.38;}
+.ms-item.next-ms{border-color:rgba(212,175,100,.3);background:rgba(212,175,100,.04);}
+.ms-age{
+  font-family:var(--font-display);font-size:1.6rem;font-weight:600;
+  color:var(--gold);width:48px;flex-shrink:0;line-height:1;letter-spacing:-.03em;
+}
+.ms-name{font-weight:500;font-size:14px;flex:1;}
+.ms-date{font-size:11px;color:var(--text2);font-weight:300;}
+.ms-badge{
+  font-size:8px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
+  padding:4px 10px;border-radius:50px;flex-shrink:0;
+}
+.ms-badge.past{background:rgba(255,255,255,.06);color:var(--text2);}
+.ms-badge.next{background:var(--gold-dim);color:var(--gold);border:1px solid var(--border-g);}
+.ms-badge.upcoming{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(96,165,250,.2);}
+
+/* ─────────────────────────────────────────────
+   BIRTHDAY COUNTDOWN
+───────────────────────────────────────────── */
+.bday-card{
+  background:linear-gradient(135deg,rgba(212,175,100,.08) 0%,rgba(212,175,100,.03) 100%);
+  border:1px solid rgba(212,175,100,.2);border-radius:var(--r);
+  padding:32px;display:flex;align-items:center;gap:28px;
+  box-shadow:0 0 40px rgba(212,175,100,.05);
+}
+.bday-emoji-wrap{
+  font-size:3rem;flex-shrink:0;
+  width:72px;height:72px;
+  background:var(--gold-dim);border:1px solid var(--border-g);
+  border-radius:18px;display:flex;align-items:center;justify-content:center;
+}
+.bday-right{flex:1;}
+.bday-lbl{font-size:10px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;}
+.bday-cd{display:flex;gap:clamp(14px,4vw,32px);}
+.bday-unit{text-align:center;}
+.bday-num{
+  font-family:var(--font-display);
+  font-size:clamp(1.8rem,6vw,3rem);
+  color:var(--gold);line-height:1;
+  font-variant-numeric:tabular-nums;letter-spacing:-.04em;
+}
+.bday-unit-lbl{font-size:9px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--text2);margin-top:6px;}
+.bday-today{font-family:var(--font-display);font-size:1.6rem;font-style:italic;color:var(--gold);}
+
+/* ─────────────────────────────────────────────
+   FUN FACTS GRID
+───────────────────────────────────────────── */
+.fact-tile{
+  background:var(--surf);border:1px solid var(--border);border-radius:var(--r);
+  padding:20px 18px;
+  transition:border-color .25s,transform .25s;
+}
+.fact-tile:hover{border-color:var(--border-h);transform:translateY(-2px);}
+.fact-q{font-size:10px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--text2);margin-bottom:8px;}
+.fact-a{font-family:var(--font-display);font-size:clamp(1.2rem,3.5vw,1.7rem);font-weight:600;color:var(--text);letter-spacing:-.02em;}
+.fact-a .hi{color:var(--gold);}
+.fact-sub{font-size:11px;color:var(--text2);margin-top:4px;font-weight:300;}
+
+/* ─────────────────────────────────────────────
+   ACTIONS
+───────────────────────────────────────────── */
+.actions-row{display:flex;gap:10px;flex-wrap:wrap;}
+.action-btn{
+  flex:1;min-width:100px;
+  padding:14px 20px;border-radius:14px;border:1px solid var(--border);
+  background:var(--surf);color:var(--text);
+  font-family:var(--font-body);font-size:12px;font-weight:500;
+  letter-spacing:.14em;text-transform:uppercase;cursor:pointer;
+  transition:all .2s var(--ease-spring);
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.action-btn:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-dim);transform:translateY(-2px);}
+.action-btn.reset:hover{border-color:var(--red);color:var(--red);background:var(--red-dim);}
+
+/* ─────────────────────────────────────────────
+   TOAST
+───────────────────────────────────────────── */
+.toast{
+  position:fixed;bottom:28px;left:50%;
+  transform:translateX(-50%) translateY(100px);
+  background:var(--surf2);border:1px solid var(--border-h);border-radius:50px;
+  padding:14px 28px;font-size:13px;font-weight:500;color:var(--text);
+  box-shadow:0 20px 60px rgba(0,0,0,.7);z-index:999;
+  transition:transform .4s var(--ease-spring);white-space:nowrap;
+}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+/* ─────────────────────────────────────────────
+   CONFETTI
+───────────────────────────────────────────── */
+.cf{position:fixed;pointer-events:none;z-index:9999;border-radius:2px;animation:cfFall linear forwards;}
+@keyframes cfFall{from{transform:translateY(-10px) rotate(0deg);opacity:1}to{transform:translateY(105vh) rotate(800deg);opacity:0}}
+
+/* ─────────────────────────────────────────────
+   FOOTER
+───────────────────────────────────────────── */
+footer{
+  border-top:1px solid var(--border);
+  padding:40px 20px;text-align:center;
+}
+.footer-inner{max-width:1000px;margin:0 auto;}
+.footer-logo{font-family:var(--font-display);font-size:1.1rem;font-weight:600;color:var(--text2);margin-bottom:8px;}
+.footer-logo span{color:var(--gold);}
+.footer-copy{font-size:12px;color:var(--text3);font-weight:300;}
+
+/* ─────────────────────────────────────────────
+   ANIMATIONS
+───────────────────────────────────────────── */
+@keyframes fadeDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+/* Staggered section reveals */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s var(--ease-spring),transform .7s var(--ease-spring);}
+.reveal.in{opacity:1;transform:translateY(0);}
+
+/* ─────────────────────────────────────────────
+   RESPONSIVE
+───────────────────────────────────────────── */
+@media(max-width:640px){
+  .date-grid{grid-template-columns:1fr 1fr;}
+  .date-grid .field:last-child{grid-column:1/-1;}
+  .age-unit{padding:0 clamp(14px,5vw,24px);}
+  .age-num{font-size:clamp(3.5rem,14vw,5rem);}
+  .g2,.g3,.g4{grid-template-columns:repeat(2,1fr);}
+  .g4{grid-template-columns:repeat(2,1fr);}
+  .bday-card{flex-direction:column;text-align:center;}
+  .bday-cd{justify-content:center;}
+  .gen-header,.gen-body{padding:20px;}
+  .live-card{grid-template-columns:1fr;}
+  .live-unit:not(:last-child)::after{display:none;}
+  .hero h1{font-size:clamp(2.8rem,11vw,4rem);}
+}
+@media(max-width:400px){
+  .g2,.g3,.g4{grid-template-columns:1fr;}
+  .ms-date{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ─────────────────────────────────────────────── -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="nav-logo-mark">⏳</div>
+      <div class="nav-logo-text">Age<span>Calc</span> Pro</div>
+    </a>
+    <div class="nav-pill">Free · No signup</div>
+  </div>
+</nav>
+
+<!-- ── HERO ────────────────────────────────────────────── -->
+<div class="page">
+<section class="hero">
+  <div class="hero-eyebrow">
+    <span class="hero-dot"></span>
+    Discover Your Complete Life Story
+  </div>
+  <h1>
+    How old are<br>
+    <em class="line2">you, really?</em>
+  </h1>
+  <p class="hero-sub">
+    Exact age · Live ticker · Generation · Zodiac · Numerology · Life stats · Milestones
+  </p>
+
+  <!-- INPUT CARD -->
+  <div class="input-section">
+    <div class="input-card">
+      <div class="input-label">Enter your date of birth</div>
+      <div class="date-grid">
+        <div class="field">
+          <label>Day</label>
+          <input type="number" id="inp-day" placeholder="DD" min="1" max="31"/>
+        </div>
+        <div class="field">
+          <label>Month</label>
+          <input type="number" id="inp-month" placeholder="MM" min="1" max="12"/>
+        </div>
+        <div class="field">
+          <label>Year</label>
+          <input type="number" id="inp-year" placeholder="YYYY" min="1900" max="2025"/>
+        </div>
+      </div>
+      <div class="err-msg" id="err-msg"></div>
+      <button class="calc-btn" onclick="calculate()">
+        <span class="btn-icon">✦</span>
+        Calculate My Age
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ── RESULTS ──────────────────────────────────────────── -->
+<div id="results">
+
+<!-- BIG AGE -->
+<section>
+  <div class="age-hero reveal">
+    <div class="age-hero-label">Your Exact Age</div>
+    <div class="age-nums">
+      <div class="age-unit">
+        <div class="age-num" id="r-years">—</div>
+        <div class="age-unit-lbl">Years</div>
+      </div>
+      <div class="age-unit">
+        <div class="age-num" id="r-months">—</div>
+        <div class="age-unit-lbl">Months</div>
+      </div>
+      <div class="age-unit">
+        <div class="age-num" id="r-days">—</div>
+        <div class="age-unit-lbl">Days</div>
+      </div>
+    </div>
+    <div class="age-summary" id="age-summary"></div>
+  </div>
+
+  <!-- LIVE -->
+  <div class="live-card reveal" style="animation-delay:.05s">
+    <div class="live-badge" style="position:absolute;top:10px;right:10px;z-index:2;display:flex;align-items:center;gap:4px;font-size:8px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--green);background:var(--green-dim);border:1px solid rgba(74,222,128,.18);border-radius:50px;padding:3px 8px;">
+      <span class="live-badge-dot"></span> Live
+    </div>
+    <div class="live-unit"><div class="live-num" id="r-hours">0</div><div class="live-lbl">Total Hours</div></div>
+    <div class="live-unit"><div class="live-num" id="r-minutes">0</div><div class="live-lbl">Total Minutes</div></div>
+    <div class="live-unit"><div class="live-num" id="r-seconds">0</div><div class="live-lbl">Total Seconds</div></div>
+  </div>
+
+  <!-- TIME STATS -->
+  <div class="g3 reveal" style="animation-delay:.1s">
+    <div class="stat-tile">
+      <span class="stat-tile-icon">🗓️</span>
+      <div class="stat-tile-num" id="r-totaldays">—</div>
+      <div class="stat-tile-lbl">Total Days</div>
+    </div>
+    <div class="stat-tile">
+      <span class="stat-tile-icon">📅</span>
+      <div class="stat-tile-num" id="r-weeks">—</div>
+      <div class="stat-tile-lbl">Total Weeks</div>
+    </div>
+    <div class="stat-tile">
+      <span class="stat-tile-icon">✨</span>
+      <div class="stat-tile-num" id="r-weekday">—</div>
+      <div class="stat-tile-lbl">Born On</div>
+    </div>
+  </div>
+</section>
+
+<!-- GENERATION -->
+<section class="reveal">
+  <div class="sec-header">
+    <div class="sec-icon">🧬</div>
+    <div>
+      <div class="sec-title">Your Generation</div>
+      <div class="sec-sub">Generational identity, culture & defining traits</div>
+    </div>
+    <div class="sec-line"></div>
+  </div>
+  <div class="gen-card" id="gen-card">
+    <div class="gen-header">
+      <div class="gen-tag">Generation</div>
+      <div class="gen-name" id="gen-name">—</div>
+      <div class="gen-range" id="gen-range">—</div>
+    </div>
+    <div class="gen-body">
+      <p class="gen-description" id="gen-desc">—</p>
+      <div class="gen-traits" id="gen-traits"></div>
+      <div class="gen-famous">
+        <div class="gen-famous-title">Famous people from your generation</div>
+        <div class="gen-famous-list" id="gen-famous"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PERSONAL IDENTITY -->
+<section class="reveal">
+  <div class="sec-header">
+    <div class="sec-icon">🌌</div>
+    <div>
+      <div class="sec-title">Personal Identity</div>
+      <div class="sec-sub">Zodiac, elements, birthstone & birth flower</div>
+    </div>
+    <div class="sec-line"></div>
+  </div>
+
+  <!-- Zodiac row -->
+  <div class="g2" style="margin-bottom:12px;">
+    <!-- Western Zodiac -->
+    <div class="zodiac-card">
+      <div class="zodiac-top">
+        <div class="zodiac-symbol" id="wz-symbol">♈</div>
+        <div>
+          <div class="zodiac-lbl" style="font-size:9px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--text2);margin-bottom:4px;">Western Zodiac</div>
+          <div class="zodiac-name" id="wz-name">—</div>
+          <div class="zodiac-dates" id="wz-dates">—</div>
+          <div class="zodiac-planet" id="wz-planet">—</div>
+        </div>
+      </div>
+      <div class="zodiac-tags" id="wz-traits"></div>
+      <div class="zodiac-compat">
+        <div class="zodiac-compat-title">Compatible with</div>
+        <div class="zodiac-compat-list" id="wz-compat">—</div>
+      </div>
+    </div>
+    <!-- Chinese Zodiac -->
+    <div class="zodiac-card">
+      <div class="zodiac-top">
+        <div class="zodiac-symbol" id="cz-symbol">🐉</div>
+        <div>
+          <div class="zodiac-lbl" style="font-size:9px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--text2);margin-bottom:4px;">Chinese Zodiac</div>
+          <div class="zodiac-name" id="cz-name">—</div>
+          <div class="zodiac-dates" id="cz-element">—</div>
+          <div class="zodiac-planet" id="cz-year">—</div>
+        </div>
+      </div>
+      <div class="zodiac-tags" id="cz-traits"></div>
+      <div class="zodiac-compat">
+        <div class="zodiac-compat-title">Personality</div>
+        <div class="zodiac-compat-list" id="cz-personality">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stone, Flower, Season, Element -->
+  <div class="g4">
+    <div class="info-tile">
+      <div class="info-tile-icon" id="stone-icon">💎</div>
+      <div>
+        <div class="info-tile-lbl">Birthstone</div>
+        <div class="info-tile-val" id="stone-name">—</div>
+        <div class="info-tile-sub" id="stone-meaning">—</div>
+      </div>
+    </div>
+    <div class="info-tile">
+      <div class="info-tile-icon" id="flower-icon">🌸</div>
+      <div>
+        <div class="info-tile-lbl">Birth Flower</div>
+        <div class="info-tile-val" id="flower-name">—</div>
+        <div class="info-tile-sub" id="flower-meaning">—</div>
+      </div>
+    </div>
+    <div class="info-tile">
+      <div class="info-tile-icon" id="season-icon">🌿</div>
+      <div>
+        <div class="info-tile-lbl">Birth Season</div>
+        <div class="info-tile-val" id="season-name">—</div>
+        <div class="info-tile-sub" id="season-trait">—</div>
+      </div>
+    </div>
+    <div class="info-tile">
+      <div class="info-tile-icon" id="elem-icon">🔥</div>
+      <div>
+        <div class="info-tile-lbl">Zodiac Element</div>
+        <div class="info-tile-val" id="elem-name">—</div>
+        <div class="info-tile-sub" id="elem-trait">—</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NUMEROLOGY -->
+<section class="reveal">
+  <div class="sec-header">
+    <div class="sec-icon">🔢</div>
+    <div>
+      <div class="sec-title">Numerology</div>
+      <div class="sec-sub">Life path number & personality number</div>
+    </div>
+    <div class="sec-line"></div>
+  </div>
+  <div class="g2">
+    <div class="num-card">
+      <div style="font-size:9px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--text2);margin-bottom:12px;">Life Path Number</div>
+      <div class="num-big" id="num-life">—</div>
+      <div class="num-title" id="num-life-name">—</div>
+      <p class="num-desc" id="num-life-desc">—</p>
+    </div>
+    <div class="num-card">
+      <div style="font-size:9px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--text2);margin-bottom:12px;">Birth Day Number</div>
+      <div class="num-big" id="num-birth">—</div>
+      <div class="num-title" id="num-birth-name">—</div>
+      <p class="num-desc" id="num-birth-desc">—</p>
+    </div>
+  </div>
+</section>
+
+<!-- LIFE STATS -->
+<section class="reveal">
+  <div class="sec-header">
+    <div class="sec-icon">❤️</div>
+    <div>
+      <div class="sec-title">You've Experienced</div>
+      <div class="sec-sub">Estimated biological stats since birth</div>
+    </div>
+    <div class="sec-line"></div>
+  </div>
+  <div class="g4" style="margin-bottom:12px;">
+    <div class="life-tile"><span class="life-tile-icon">❤️</span><div class="life-tile-num" id="l-heartbeats">—</div><div class="life-tile-lbl">Heartbeats</div></div>
+    <div class="life-tile"><span class="life-tile-icon">🌬️</span><div class="life-tile-num" id="l-breaths">—</div><div class="life-tile-lbl">Breaths</div></div>
+    <div class="life-tile"><span class="life-tile-icon">👁️</span><div class="life-tile-num" id="l-blinks">—</div><div class="life-tile-lbl">Blinks</div></div>
+    <div class="life-tile"><span class="life-tile-icon">🚶</span><div class="life-tile-num" id="l-steps">—</div><div class="life-tile-lbl">Steps</div></div>
+    <div class="life-tile"><span class="life-tile-icon">😴</span><div class="life-tile-num" id="l-sleep">—</div><div class="life-tile-lbl">Hrs Slept</div></div>
+    <div class="life-tile"><span class="life-tile-icon">🍽️</span><div class="life-tile-num" id="l-meals">—</div><div class="life-tile-lbl">Meals</div></div>
+    <div class="life-tile"><span class="life-tile-icon">💭</span><div class="life-tile-num" id="l-dreams">—</div><div class="life-tile-lbl">Dreams</div></div>
+    <div class="life-tile"><span class="life-tile-icon">😂</span><div class="life-tile-num" id="l-laughs">—</div><div class="life-tile-lbl">Laughs</div></div>
+  </div>
+</section>
+
+<!-- FUN FACTS -->
+<section class="reveal">
+  <div class="sec-header">
+    <div class="sec-icon">🌍</div>
+    <div>
+      <div class="sec-title">Fun Facts</div>
+      <div class="sec-sub">Remarkable numbers from your time on Earth</div>
+    </div>
+    <div class="sec-line"></div>
+  </div>
+  <div class="g4">
+    <div class="fact-tile"><div class="fact-q">Full Moons</div><div class="fact-a"><span class="hi" id="ff-moons">—</span></div><div class="fact-sub">lunar cycles witnessed</div></div>
+    <div class="fact-tile"><div class="fact-q">Seasons</div><div class="fact-a"><span class="hi" id="ff-seasons">—</span></div><div class="fact-sub">spring, summer, fall, winter</div></div>
+    <div class="fact-tile"><div class="fact-q">Weekends</div><div class="fact-a"><span class="hi" id="ff-weekends">—</span></div><div class="fact-sub">Saturdays & Sundays lived</div></div>
+    <div class="fact-tile"><div class="fact-q">Leap Years</div><div class="fact-a"><span class="hi" id="ff-leaps">—</span></div><div class="fact-sub">extra Feb 29 days</div></div>
+    <div class="fact-tile"><div class="fact-q">Olympics</div><div class="fact-a"><span class="hi" id="ff-olympics">—</span></div><div class="fact-sub">Summer Olympic cycles</div></div>
+    <div class="fact-tile"><div class="fact-q">New Years</div><div class="fact-a"><span class="hi" id="ff-newyears">—</span></div><div class="fact-sub">Jan 1st celebrations</div></div>
+    <div class="fact-tile"><div class="fact-q">Sunrises</div><div class="fact-a"><span class="hi" id="ff-sunrises">—</span></div><div class="fact-sub">dawns witnessed</div></div>
+    <div class="fact-tile"><div class="fact-q">Decade Born</div><div class="fact-a" id="ff-decade" style="font-size:1.1rem;">—</div><div class="fact-sub" id="ff-decade-sub">—</div></div>
+  </div>
+</section>
+
+<!-- LIFE PROGRESS -->
+<section class="reveal">
+  <div class="sec-header">
+    <div class="sec-icon">📊</div>
+    <div>
+      <div class="sec-title">Life Progress</div>
+      <div class="sec-sub">How far along your journey are you?</div>
+    </div>
+    <div class="sec-line"></div>
+  </div>
+  <div class="prog-card">
+    <div class="prog-row">
+      <div class="prog-head">
+        <span class="prog-label">Average lifespan (80 years)</span>
+        <span class="prog-pct" id="prog-80">0%</span>
+      </div>
+      <div class="prog-track"><div class="prog-fill" id="prog-bar-80" style="width:0%"></div></div>
+      <p class="prog-note" id="prog-note-80"></p>
+    </div>
+    <div class="prog-row">
+      <div class="prog-head">
+        <span class="prog-label">Extended lifespan (100 years)</span>
+        <span class="prog-pct" id="prog-100">0%</span>
+      </div>
+      <div class="prog-track">
+        <div class="prog-fill" id="prog-bar-100" style="width:0%;background:linear-gradient(90deg,var(--blue),#93c5fd);"></div>
+      </div>
+      <p class="prog-note" id="prog-note-100"></p>
+    </div>
+  </div>
+</section>
+
+<!-- MILESTONES -->
+<section class="reveal">
+  <div class="sec-header">
+    <div class="sec-icon">🏆</div>
+    <div>
+      <div class="sec-title">Life Milestones</div>
+      <div class="sec-sub">Past achievements & future highlights</div>
+    </div>
+    <div class="sec-line"></div>
+  </div>
+  <div class="ms-list" id="ms-list"></div>
+</section>
+
+<!-- BIRTHDAY COUNTDOWN -->
+<section class="reveal">
+  <div class="sec-header">
+    <div class="sec-icon">🎂</div>
+    <div>
+      <div class="sec-title">Birthday Countdown</div>
+      <div class="sec-sub">Live countdown to your next birthday</div>
+    </div>
+    <div class="sec-line"></div>
+  </div>
+  <div class="bday-card">
+    <div class="bday-emoji-wrap">🎂</div>
+    <div class="bday-right">
+      <div class="bday-lbl" id="bday-lbl">Next Birthday</div>
+      <div class="bday-cd" id="bday-cd"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ACTIONS -->
+<section class="reveal">
+  <div class="actions-row">
+    <button class="action-btn" onclick="copyResults()">📋 Copy Results</button>
+    <button class="action-btn" onclick="shareResults()">🔗 Share</button>
+    <button class="action-btn reset" onclick="resetCalc()">↺ Calculate Again</button>
+  </div>
+</section>
+
+</div><!-- /results -->
+</div><!-- /page -->
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Age<span>Calc</span> Pro</div>
+    <div class="footer-copy">Open source · No tracking · No ads · Works offline</div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  DATA TABLES
+// ═══════════════════════════════════════════════════════
+
+const WEEKDAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const MONTHS_S=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MONTHS_F=['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+/* ── GENERATION (fixed by birth year) ─────────────────── */
+const GENERATIONS=[
+  {
+    name:'Generation Alpha',range:'2013 – present',years:[2013,9999],
+    desc:'The first generation born entirely in the 21st century. You are growing up with AI, augmented reality, and hyper-personalized digital experiences as baseline reality — not novelties. Your generation will reshape education, work, and human-machine interaction.',
+    traits:['Digital native','AI-first','Visual learner','Creator economy','Hyper-connected','Resilient'],
+    famous:['Royalty Brown','Ryan Kaji','Stormi Webster','Blue Ivy Carter'],
+  },
+  {
+    name:'Generation Z',range:'1997 – 2012',years:[1997,2012],
+    desc:'The first true digital natives — you never knew a world without the internet. Shaped by the Great Recession, climate anxiety, and social media, Gen Z is pragmatic, entrepreneurial, and fiercely authentic. You value mental health, social justice, and side hustles.',
+    traits:['Digital native','Pragmatic','Entrepreneurial','Diverse','Values-driven','Financially cautious'],
+    famous:['Billie Eilish','Olivia Rodrigo','Zendaya','Timothée Chalamet','Greta Thunberg','Malala Yousafzai'],
+  },
+  {
+    name:'Millennials',range:'1981 – 1996',years:[1981,1996],
+    desc:'The generation that witnessed the internet\'s birth, 9/11, the 2008 financial crisis, and the smartphone revolution. Millennials are collaborative, purpose-driven, and resilient. Known for redefining work-life balance and building the gig economy.',
+    traits:['Tech-savvy','Purpose-driven','Collaborative','Entrepreneurial','Socially aware','Global mindset'],
+    famous:['Elon Musk','Mark Zuckerberg','Beyoncé','Adele','Drake','Lady Gaga','Harry Styles'],
+  },
+  {
+    name:'Generation X',range:'1965 – 1980',years:[1965,1980],
+    desc:'The "forgotten generation" sandwiched between Boomers and Millennials, Gen X is independent, resourceful, and adaptable. You lived through the Cold War, AIDS epidemic, and the rise of MTV. Known for work-life balance and self-sufficiency.',
+    traits:['Independent','Resourceful','Adaptable','Skeptical','Work-life balance','Self-reliant'],
+    famous:['Elon Musk','Jeff Bezos','Sheryl Sandberg','Barack Obama','Kurt Cobain','Quentin Tarantino'],
+  },
+  {
+    name:'Baby Boomers',range:'1946 – 1964',years:[1946,1964],
+    desc:'Born during the post-WWII population boom, Baby Boomers grew up during unparalleled economic prosperity, the Civil Rights Movement, Vietnam War, and the Space Age. Boomers redefined youth culture, pioneered the counterculture revolution, and built modern corporate America.',
+    traits:['Optimistic','Competitive','Workaholic','Team-oriented','Goal-driven','Principled'],
+    famous:['Bill Gates','Steve Jobs','Oprah Winfrey','Steven Spielberg','Barack Obama','Hillary Clinton'],
+  },
+  {
+    name:'Silent Generation',range:'1928 – 1945',years:[1928,1945],
+    desc:'Coming of age during the Great Depression and WWII, the Silent Generation learned frugality, sacrifice, and civic duty. They fought for civil rights, built the middle class, and laid the groundwork for prosperity. Known for their strong work ethic and loyalty.',
+    traits:['Hard-working','Loyal','Disciplined','Civic-minded','Conformist','Traditionalist'],
+    famous:['Martin Luther King Jr.','Audrey Hepburn','Elvis Presley','Clint Eastwood','Johnny Cash'],
+  },
+  {
+    name:'Greatest Generation',range:'1901 – 1927',years:[1901,1927],
+    desc:'Defined by incredible hardship and sacrifice — surviving the Great Depression and fighting in World War II. The Greatest Generation built modern democracy, founded major institutions, and embodied duty, honor, and sacrifice as core values.',
+    traits:['Dutiful','Frugal','Patriotic','Resilient','Communal','Stoic'],
+    famous:['John F. Kennedy','Ronald Reagan','Frank Sinatra','Katharine Hepburn','Winston Churchill'],
+  },
+];
+
+function getGeneration(year){
+  return GENERATIONS.find(g=>year>=g.years[0]&&year<=g.years[1])||GENERATIONS[GENERATIONS.length-1];
+}
+
+/* ── WESTERN ZODIAC ───────────────────────────────────── */
+const ZODIACS=[
+  {n:'Capricorn',symbol:'♑',dates:'Dec 22 – Jan 19',planet:'♄ Saturn',element:'Earth',
+   traits:['Ambitious','Disciplined','Patient','Responsible','Practical'],
+   compat:'Taurus, Virgo, Scorpio, Pisces'},
+  {n:'Aquarius',symbol:'♒',dates:'Jan 20 – Feb 18',planet:'♅ Uranus',element:'Air',
+   traits:['Independent','Original','Humanitarian','Analytical','Eccentric'],
+   compat:'Gemini, Libra, Aries, Sagittarius'},
+  {n:'Pisces',symbol:'♓',dates:'Feb 19 – Mar 20',planet:'♆ Neptune',element:'Water',
+   traits:['Intuitive','Empathetic','Artistic','Gentle','Wise'],
+   compat:'Cancer, Scorpio, Taurus, Capricorn'},
+  {n:'Aries',symbol:'♈',dates:'Mar 21 – Apr 19',planet:'♂ Mars',element:'Fire',
+   traits:['Bold','Courageous','Determined','Energetic','Passionate'],
+   compat:'Leo, Sagittarius, Gemini, Aquarius'},
+  {n:'Taurus',symbol:'♉',dates:'Apr 20 – May 20',planet:'♀ Venus',element:'Earth',
+   traits:['Reliable','Patient','Devoted','Sensual','Stubborn'],
+   compat:'Virgo, Capricorn, Cancer, Pisces'},
+  {n:'Gemini',symbol:'♊',dates:'May 21 – Jun 20',planet:'☿ Mercury',element:'Air',
+   traits:['Curious','Adaptable','Witty','Expressive','Quick-witted'],
+   compat:'Libra, Aquarius, Aries, Leo'},
+  {n:'Cancer',symbol:'♋',dates:'Jun 21 – Jul 22',planet:'☽ Moon',element:'Water',
+   traits:['Nurturing','Loyal','Intuitive','Protective','Imaginative'],
+   compat:'Scorpio, Pisces, Taurus, Virgo'},
+  {n:'Leo',symbol:'♌',dates:'Jul 23 – Aug 22',planet:'☀ Sun',element:'Fire',
+   traits:['Generous','Creative','Loyal','Theatrical','Passionate'],
+   compat:'Aries, Sagittarius, Gemini, Libra'},
+  {n:'Virgo',symbol:'♍',dates:'Aug 23 – Sep 22',planet:'☿ Mercury',element:'Earth',
+   traits:['Analytical','Hardworking','Modest','Practical','Loyal'],
+   compat:'Taurus, Capricorn, Cancer, Scorpio'},
+  {n:'Libra',symbol:'♎',dates:'Sep 23 – Oct 22',planet:'♀ Venus',element:'Air',
+   traits:['Diplomatic','Fair','Social','Gracious','Idealistic'],
+   compat:'Gemini, Aquarius, Leo, Sagittarius'},
+  {n:'Scorpio',symbol:'♏',dates:'Oct 23 – Nov 21',planet:'♇ Pluto',element:'Water',
+   traits:['Passionate','Determined','Magnetic','Brave','Resourceful'],
+   compat:'Cancer, Pisces, Virgo, Capricorn'},
+  {n:'Sagittarius',symbol:'♐',dates:'Nov 22 – Dec 21',planet:'♃ Jupiter',element:'Fire',
+   traits:['Optimistic','Adventurous','Honest','Intellectual','Enthusiastic'],
+   compat:'Aries, Leo, Libra, Aquarius'},
+];
+
+const ZODIAC_CUTS=[20,18,20,19,20,21,22,22,22,22,21,21];
+function getZodiac(mo,d){
+  return ZODIACS[(d<=ZODIAC_CUTS[mo-1]?mo-1:mo)%12];
+}
+
+const ELEMENTS={
+  Fire:{icon:'🔥',trait:'Passionate, energetic & inspiring'},
+  Earth:{icon:'🌿',trait:'Grounded, practical & dependable'},
+  Air:{icon:'💨',trait:'Intellectual, communicative & social'},
+  Water:{icon:'💧',trait:'Emotional, intuitive & empathetic'},
+};
+
+/* ── CHINESE ZODIAC ───────────────────────────────────── */
+const CZ_ANIMALS=[
+  {n:'Rat',icon:'🐀',element:'Water',
+   traits:['Clever','Adaptable','Quick-witted','Resourceful','Versatile'],
+   personality:'Natural leaders who are charming and persuasive, though sometimes manipulative.'},
+  {n:'Ox',icon:'🐂',element:'Earth',
+   traits:['Diligent','Dependable','Strong','Patient','Determined'],
+   personality:'Hard-working and methodical, oxen are the backbone of society — reliable to a fault.'},
+  {n:'Tiger',icon:'🐅',element:'Wood',
+   traits:['Brave','Competitive','Confident','Unpredictable','Magnetic'],
+   personality:'Natural leaders with fierce courage. Tigers command respect wherever they go.'},
+  {n:'Rabbit',icon:'🐇',element:'Wood',
+   traits:['Gentle','Quiet','Elegant','Alert','Responsible'],
+   personality:'Diplomatic and kind, rabbits are beloved for their grace and sensitivity.'},
+  {n:'Dragon',icon:'🐉',element:'Earth',
+   traits:['Confident','Intelligent','Enthusiastic','Ambitious','Charismatic'],
+   personality:'The most powerful zodiac sign — dragons are natural leaders with extraordinary energy.'},
+  {n:'Snake',icon:'🐍',element:'Fire',
+   traits:['Wise','Intuitive','Elegant','Private','Thoughtful'],
+   personality:'Deep thinkers with a mysterious allure. Snakes pursue goals with quiet determination.'},
+  {n:'Horse',icon:'🐎',element:'Fire',
+   traits:['Energetic','Independent','Free-spirited','Sociable','Adventurous'],
+   personality:'Vibrant and spontaneous, horses crave freedom and love being the center of attention.'},
+  {n:'Goat',icon:'🐐',element:'Earth',
+   traits:['Gentle','Artistic','Mild-mannered','Shy','Compassionate'],
+   personality:'Creative and empathetic souls, goats are deeply connected to arts and beauty.'},
+  {n:'Monkey',icon:'🐒',element:'Metal',
+   traits:['Clever','Curious','Mischievous','Versatile','Inventive'],
+   personality:'The most entertaining zodiac sign — monkeys are witty problem-solvers who love a challenge.'},
+  {n:'Rooster',icon:'🐓',element:'Metal',
+   traits:['Observant','Hardworking','Courageous','Confident','Humorous'],
+   personality:'Perfectionists who are fiercely dedicated. Roosters take pride in everything they do.'},
+  {n:'Dog',icon:'🐕',element:'Earth',
+   traits:['Loyal','Honest','Responsible','Courageous','Diligent'],
+   personality:'The most loyal sign — dogs are trustworthy guardians who put others before themselves.'},
+  {n:'Pig',icon:'🐖',element:'Water',
+   traits:['Generous','Diligent','Compassionate','Concentrated','Sincere'],
+   personality:'Warm-hearted and genuine, pigs bring joy wherever they go with their pure optimism.'},
+];
+
+function getCZAnimal(year){
+  // 1900 is Rat year
+  return CZ_ANIMALS[((year-1900)%12+12)%12];
+}
+
+/* ── BIRTHSTONES ──────────────────────────────────────── */
+const STONES=[
+  {n:'Garnet',i:'🔴',m:'Strength & protection'},
+  {n:'Amethyst',i:'💜',m:'Wisdom & clarity'},
+  {n:'Aquamarine',i:'🔵',m:'Courage & serenity'},
+  {n:'Diamond',i:'💎',m:'Love & invincibility'},
+  {n:'Emerald',i:'💚',m:'Rebirth & fertility'},
+  {n:'Pearl',i:'⚪',m:'Purity & integrity'},
+  {n:'Ruby',i:'❤️',m:'Passion & vitality'},
+  {n:'Peridot',i:'🟢',m:'Healing & renewal'},
+  {n:'Sapphire',i:'🔷',m:'Wisdom & royalty'},
+  {n:'Opal',i:'🌈',m:'Hope & creativity'},
+  {n:'Topaz',i:'🟡',m:'Joy & abundance'},
+  {n:'Turquoise',i:'🩵',m:'Success & luck'},
+];
+
+/* ── BIRTH FLOWERS ────────────────────────────────────── */
+const FLOWERS=[
+  {n:'Carnation',i:'🌹',m:'Love & distinction'},
+  {n:'Violet',i:'💜',m:'Loyalty & devotion'},
+  {n:'Daffodil',i:'🌼',m:'New beginnings'},
+  {n:'Daisy',i:'🌸',m:'Innocence & joy'},
+  {n:'Lily of the Valley',i:'🌿',m:'Happiness & grace'},
+  {n:'Rose',i:'🌹',m:'Love & beauty'},
+  {n:'Larkspur',i:'🔵',m:'Levity & lightness'},
+  {n:'Gladiolus',i:'🌺',m:'Strength & integrity'},
+  {n:'Aster',i:'⭐',m:'Wisdom & love'},
+  {n:'Marigold',i:'🌻',m:'Creativity & passion'},
+  {n:'Chrysanthemum',i:'🌸',m:'Loyalty & joy'},
+  {n:'Narcissus',i:'🌼',m:'Hope & wealth'},
+];
+
+/* ── BIRTH SEASONS ────────────────────────────────────── */
+function getSeason(mo){
+  // Northern hemisphere
+  if(mo<=2||mo===12)return{n:'Winter',i:'❄️',trait:'Calm, introspective & resilient'};
+  if(mo<=5)return{n:'Spring',i:'🌸',trait:'Optimistic, creative & energetic'};
+  if(mo<=8)return{n:'Summer',i:'☀️',trait:'Vibrant, social & adventurous'};
+  return{n:'Autumn',i:'🍂',trait:'Thoughtful, balanced & wise'};
+}
+
+/* ── NUMEROLOGY ───────────────────────────────────────── */
+const NUM_MEANINGS={
+  1:{name:'The Leader',desc:'Independent, pioneering, and self-driven. You have a natural ability to lead and innovate. Your life path is about developing individuality and courage.'},
+  2:{name:'The Mediator',desc:'Diplomatic, sensitive, and cooperative. You excel at bringing people together and thrive in partnerships. Harmony and balance define your journey.'},
+  3:{name:'The Creator',desc:'Expressive, joyful, and creative. You have a gift for communication and artistic expression. Your life is about sharing your unique voice with the world.'},
+  4:{name:'The Builder',desc:'Practical, disciplined, and hard-working. You build lasting foundations and value stability. Your path is about creating something enduring.'},
+  5:{name:'The Explorer',desc:'Adventurous, free-spirited, and adaptable. You crave variety and experience. Your life is an exciting journey of constant discovery and change.'},
+  6:{name:'The Nurturer',desc:'Caring, responsible, and harmonious. You naturally take care of others and seek to create beauty. Your path is defined by love and service.'},
+  7:{name:'The Thinker',desc:'Analytical, introspective, and spiritual. You seek deeper truths and hidden knowledge. Your journey is a quest for wisdom and understanding.'},
+  8:{name:'The Achiever',desc:'Ambitious, authoritative, and goal-oriented. You have exceptional business acumen and leadership skills. Your path is about mastering the material world.'},
+  9:{name:'The Humanitarian',desc:'Compassionate, generous, and idealistic. You have a deep desire to improve the world. Your journey is one of selfless service and universal love.'},
+  11:{name:'The Visionary',desc:'Highly intuitive, inspirational, and idealistic. Master number 11 brings intense psychic sensitivity and spiritual insight. You are here to inspire others.'},
+  22:{name:'The Master Builder',desc:'The most powerful numerology number. You have the vision of 11 combined with the practical ability to manifest grand dreams into reality.'},
+  33:{name:'The Master Teacher',desc:'The rarest master number. Pure compassion, sacrifice, and wisdom. You are here to uplift humanity through unconditional love and healing.'},
+};
+
+function reduceNum(n){
+  if(n===11||n===22||n===33)return n;
+  if(n<10)return n;
+  const s=String(n).split('').reduce((a,d)=>a+parseInt(d),0);
+  return reduceNum(s);
+}
+
+function getLifePath(d,mo,y){
+  const sum=String(d).split('').reduce((a,c)=>a+parseInt(c),0)+
+            String(mo).split('').reduce((a,c)=>a+parseInt(c),0)+
+            String(y).split('').reduce((a,c)=>a+parseInt(c),0);
+  return reduceNum(sum);
+}
+
+function getBirthDayNum(d){return reduceNum(d);}
+
+/* ── MILESTONES ───────────────────────────────────────── */
+const MILESTONES=[
+  {a:1,n:'First Birthday 🎈'},
+  {a:5,n:'Starting School ✏️'},
+  {a:10,n:'First Decade 🔟'},
+  {a:13,n:'Becoming a Teenager 🎒'},
+  {a:16,n:'Sweet Sixteen 🌟'},
+  {a:18,n:'Legal Adulthood ⚖️'},
+  {a:21,n:'Coming of Age 🥂'},
+  {a:25,n:'Quarter Century 🏅'},
+  {a:30,n:'Thirty & Thriving 💫'},
+  {a:35,n:'Mid-Thirties 🎯'},
+  {a:40,n:'Fabulous Forties 🌟'},
+  {a:45,n:'Wisdom Years 🦅'},
+  {a:50,n:'Golden Fifty 🏆'},
+  {a:55,n:'Double Nickel 🎲'},
+  {a:60,n:'Diamond Sixty 💎'},
+  {a:65,n:'Retirement Age 🏖️'},
+  {a:70,n:'Platinum Seventy 👑'},
+  {a:75,n:'Three Quarters Century 🌺'},
+  {a:80,n:'Legendary Eighty 🌹'},
+  {a:90,n:'Super Nonagenarian ⚡'},
+  {a:100,n:'Centenarian 🎊'},
+];
+
+// ═══════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════
+let DOB=null;
+let tickerID=null;
+
+// ═══════════════════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════════════════
+function isLeap(y){return(y%4===0&&y%100!==0)||y%400===0;}
+function daysInMonth(m,y){return m===2&&isLeap(y)?29:[31,28,31,30,31,30,31,31,30,31,30,31][m-1];}
+function fmt(n){return Math.round(n).toLocaleString();}
+function pad(n){return String(n).padStart(2,'0');}
+
+function calcAge(dob,now){
+  let y=now.getFullYear()-dob.getFullYear();
+  let m=now.getMonth()-dob.getMonth();
+  let d=now.getDate()-dob.getDate();
+  if(d<0){
+    m--;
+    const pm=now.getMonth()===0?12:now.getMonth();
+    d+=daysInMonth(pm,now.getFullYear());
+  }
+  if(m<0){y--;m+=12;}
+  return{y,m,d};
+}
+
+function leapYearsInRange(a,b){
+  let c=0;for(let y=a;y<=b;y++)if(isLeap(y))c++;return c;
+}
+
+// ═══════════════════════════════════════════════════════
+//  CALCULATE
+// ═══════════════════════════════════════════════════════
+function calculate(){
+  const day=parseInt(document.getElementById('inp-day').value)||0;
+  const mon=parseInt(document.getElementById('inp-month').value)||0;
+  const yr =parseInt(document.getElementById('inp-year').value)||0;
+
+  const errEl=document.getElementById('err-msg');
+  const inputs=['inp-day','inp-month','inp-year'].map(id=>document.getElementById(id));
+  inputs.forEach(i=>i.classList.remove('err'));
+  errEl.innerHTML='';
+
+  // Validate
+  if(!day||!mon||!yr){
+    errEl.innerHTML='⚠ Please fill in all three fields.';
+    inputs.forEach(i=>{if(!parseInt(i.value))i.classList.add('err');});return;
+  }
+  if(mon<1||mon>12){errEl.innerHTML='⚠ Month must be between 1 and 12.';inputs[1].classList.add('err');return;}
+  const mx=daysInMonth(mon,yr);
+  if(day<1||day>mx){errEl.innerHTML=`⚠ Day must be 1–${mx} for this month.`;inputs[0].classList.add('err');return;}
+  if(yr<1901||yr>new Date().getFullYear()){errEl.innerHTML='⚠ Please enter a year between 1901 and today.';inputs[2].classList.add('err');return;}
+  const now=new Date();
+  DOB=new Date(yr,mon-1,day);
+  if(DOB>now){errEl.innerHTML='⚠ Date of birth cannot be in the future.';inputs.forEach(i=>i.classList.add('err'));return;}
+
+  // ── COMPUTE ───────────────────────────────────────────
+  const{y:ageY,m:ageM,d:ageD}=calcAge(DOB,now);
+  const totalDays=Math.floor((now-DOB)/86400000);
+
+  // Primary
+  setT('r-years',ageY);
+  setT('r-months',ageM);
+  setT('r-days',ageD);
+
+  // Summary
+  document.getElementById('age-summary').innerHTML=
+    `You were born on <strong>${WEEKDAYS[DOB.getDay()]}, ${MONTHS_F[mon-1]} ${day}, ${yr}</strong> — exactly <strong>${fmt(totalDays)} days</strong> ago.`;
+
+  // Stats
+  setT('r-totaldays',fmt(totalDays));
+  setT('r-weeks',fmt(Math.floor(totalDays/7)));
+  setT('r-weekday',WEEKDAYS[DOB.getDay()]);
+
+  // ── GENERATION (correctly using birth year) ────────────
+  const gen=getGeneration(yr);
+  setT('gen-name',gen.name);
+  setT('gen-range',gen.range);
+  setT('gen-desc',gen.desc);
+  document.getElementById('gen-traits').innerHTML=
+    gen.traits.map(t=>`<span class="gen-trait">${t}</span>`).join('');
+  document.getElementById('gen-famous').innerHTML=
+    gen.famous.map(f=>`<span class="gen-famous-item">${f}</span>`).join('');
+
+  // ── WESTERN ZODIAC ─────────────────────────────────────
+  const z=getZodiac(mon,day);
+  setT('wz-symbol',z.symbol);
+  setT('wz-name',z.n);
+  setT('wz-dates',z.dates);
+  setT('wz-planet',z.planet);
+  setT('wz-compat',z.compat);
+  document.getElementById('wz-traits').innerHTML=
+    z.traits.map(t=>`<span class="zodiac-tag">${t}</span>`).join('');
+
+  // Element
+  const el=ELEMENTS[z.element];
+  setT('elem-icon',el.icon);
+  setT('elem-name',z.element);
+  setT('elem-trait',el.trait);
+
+  // ── CHINESE ZODIAC ─────────────────────────────────────
+  const cz=getCZAnimal(yr);
+  setT('cz-symbol',cz.icon);
+  setT('cz-name',cz.n);
+  setT('cz-element',`${cz.element} element · Year of the ${cz.n}`);
+  setT('cz-year',`Born in the Year of the ${cz.n}`);
+  setT('cz-personality',cz.personality);
+  document.getElementById('cz-traits').innerHTML=
+    cz.traits.map(t=>`<span class="zodiac-tag">${t}</span>`).join('');
+
+  // ── STONE, FLOWER, SEASON ──────────────────────────────
+  const st=STONES[mon-1];
+  setT('stone-icon',st.i);setT('stone-name',st.n);setT('stone-meaning',st.m);
+
+  const fl=FLOWERS[mon-1];
+  setT('flower-icon',fl.i);setT('flower-name',fl.n);setT('flower-meaning',fl.m);
+
+  const ss=getSeason(mon);
+  setT('season-icon',ss.i);setT('season-name',ss.n);setT('season-trait',ss.trait);
+
+  // ── NUMEROLOGY ─────────────────────────────────────────
+  const lpn=getLifePath(day,mon,yr);
+  const lpData=NUM_MEANINGS[lpn]||NUM_MEANINGS[9];
+  setT('num-life',lpn);
+  setT('num-life-name',lpData.name);
+  setT('num-life-desc',lpData.desc);
+
+  const bdn=getBirthDayNum(day);
+  const bdData=NUM_MEANINGS[bdn]||NUM_MEANINGS[9];
+  setT('num-birth',bdn);
+  setT('num-birth-name',bdData.name);
+  setT('num-birth-desc',bdData.desc);
+
+  // ── LIFE STATS ─────────────────────────────────────────
+  const totalMins=totalDays*1440;
+  setT('l-heartbeats',fmt(totalMins*70));
+  setT('l-breaths',fmt(totalMins*16));
+  setT('l-blinks',fmt(totalMins*15));
+  setT('l-steps',fmt(totalDays*7500));
+  setT('l-sleep',fmt(totalDays*8));
+  setT('l-meals',fmt(totalDays*3));
+  setT('l-dreams',fmt(totalDays*4.5));
+  setT('l-laughs',fmt(totalDays*17));
+
+  // ── FUN FACTS ──────────────────────────────────────────
+  setT('ff-moons',fmt(Math.round(totalDays/29.53)));
+  setT('ff-seasons',fmt(ageY*4+Math.floor(ageM/3)));
+  setT('ff-weekends',fmt(Math.floor(totalDays/7)));
+  setT('ff-leaps',leapYearsInRange(yr,now.getFullYear()));
+  setT('ff-olympics',Math.floor(ageY/4));
+  setT('ff-newyears',ageY);
+  setT('ff-sunrises',fmt(totalDays));
+
+  // Decade
+  const decade=Math.floor(yr/10)*10;
+  setT('ff-decade',`${decade}s`);
+  const decadeDescs={
+    1900:'The Belle Époque — a golden age of art and prosperity',
+    1910:'WWI era — the world changed forever',
+    1920:'The Roaring Twenties — jazz, flappers & the boom',
+    1930:'The Great Depression — resilience defined a generation',
+    1940:'WWII & post-war optimism',
+    1950:'The Golden Age — prosperity, rock & roll & suburbia',
+    1960:'The revolutionary decade — civil rights, hippies & the Moon',
+    1970:'Disco, Watergate & the dawn of personal computing',
+    1980:'MTV, Reaganomics & the birth of modern pop culture',
+    1990:'The internet age — Grunge, Y2K & globalization',
+    2000:'The digital revolution — social media & smartphones',
+    2010:'The smartphone era — everything became connected',
+    2020:'The AI age — pandemic, remote work & a new normal',
+  };
+  setT('ff-decade-sub',decadeDescs[decade]||'A defining decade in history');
+
+  // ── LIFE PROGRESS ─────────────────────────────────────
+  const pct80=Math.min(100,(ageY/80*100)).toFixed(1);
+  const pct100=Math.min(100,(ageY/100*100)).toFixed(1);
+  setT('prog-80',pct80+'%');
+  setT('prog-100',pct100+'%');
+  setTimeout(()=>{
+    document.getElementById('prog-bar-80').style.width=pct80+'%';
+    document.getElementById('prog-bar-100').style.width=pct100+'%';
+  },200);
+  document.getElementById('prog-note-80').textContent=
+    (80-ageY)>0?`At the average lifespan of 80 years, you have approximately ${80-ageY} remarkable years ahead of you.`
+    :`You have surpassed the average life expectancy of 80 years — truly extraordinary!`;
+  document.getElementById('prog-note-100').textContent=
+    (100-ageY)>0?`You are ${pct100}% of the way to 100. ${100-ageY} years to the centennial milestone.`
+    :`Incredible — you are a centenarian!`;
+
+  // ── MILESTONES ─────────────────────────────────────────
+  const upcomingMs=MILESTONES.filter(ms=>new Date(yr+ms.a,mon-1,day)>now);
+  const nextAge=upcomingMs.length?upcomingMs[0].a:null;
+  document.getElementById('ms-list').innerHTML=MILESTONES.map(ms=>{
+    const dt=new Date(yr+ms.a,mon-1,day);
+    const past=dt<=now;
+    const isNext=ms.a===nextAge;
+    const dsStr=`${MONTHS_S[dt.getMonth()]} ${dt.getDate()}, ${dt.getFullYear()}`;
+    const badge=past?'<span class="ms-badge past">Achieved</span>':
+                isNext?'<span class="ms-badge next">Next ✦</span>':
+                '<span class="ms-badge upcoming">Upcoming</span>';
+    return`<div class="ms-item${past?' past':''}${isNext?' next-ms':''}">
+      <div class="ms-age">${ms.a}</div>
+      <div class="ms-name">${ms.n}</div>
+      <div class="ms-date">${dsStr}</div>
+      ${badge}
+    </div>`;
+  }).join('');
+
+  // ── START LIVE TICKER ─────────────────────────────────
+  if(tickerID)clearInterval(tickerID);
+  updateLive();
+  tickerID=setInterval(updateLive,1000);
+
+  // ── SHOW RESULTS ──────────────────────────────────────
+  const res=document.getElementById('results');
+  res.classList.add('visible');
+
+  // Trigger reveal animations
+  setTimeout(()=>{
+    document.querySelectorAll('.reveal').forEach((el,i)=>{
+      setTimeout(()=>el.classList.add('in'),i*60);
+    });
+  },50);
+
+  setTimeout(()=>res.scrollIntoView({behavior:'smooth',block:'start'}),120);
+
+  // Confetti on birthday
+  const isToday=DOB.getDate()===now.getDate()&&DOB.getMonth()===now.getMonth();
+  if(isToday)spawnConfetti();
+}
+
+// ═══════════════════════════════════════════════════════
+//  LIVE TICKER
+// ═══════════════════════════════════════════════════════
+function updateLive(){
+  if(!DOB)return;
+  const now=new Date();
+  const totalS=Math.floor((now-DOB)/1000);
+  setT('r-seconds',fmt(totalS));
+  setT('r-minutes',fmt(Math.floor(totalS/60)));
+  setT('r-hours',fmt(Math.floor(totalS/3600)));
+
+  // Birthday countdown
+  let next=new Date(now.getFullYear(),DOB.getMonth(),DOB.getDate());
+  if(next<=now)next.setFullYear(now.getFullYear()+1);
+  const diff=next-now;
+  const isToday=DOB.getDate()===now.getDate()&&DOB.getMonth()===now.getMonth();
+
+  if(isToday){
+    setT('bday-lbl','🎉 Happy Birthday!');
+    document.getElementById('bday-cd').innerHTML=
+      '<div class="bday-today">It\'s your birthday today! 🎂</div>';
+  }else{
+    setT('bday-lbl','Countdown to Next Birthday');
+    const dd=Math.floor(diff/86400000);
+    const hh=Math.floor((diff%86400000)/3600000);
+    const mm=Math.floor((diff%3600000)/60000);
+    const ss=Math.floor((diff%60000)/1000);
+    document.getElementById('bday-cd').innerHTML=`
+      <div class="bday-unit"><div class="bday-num">${dd}</div><div class="bday-unit-lbl">Days</div></div>
+      <div class="bday-unit"><div class="bday-num">${pad(hh)}</div><div class="bday-unit-lbl">Hours</div></div>
+      <div class="bday-unit"><div class="bday-num">${pad(mm)}</div><div class="bday-unit-lbl">Min</div></div>
+      <div class="bday-unit"><div class="bday-num">${pad(ss)}</div><div class="bday-unit-lbl">Sec</div></div>`;
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+//  ACTIONS
+// ═══════════════════════════════════════════════════════
+function copyResults(){
+  const y=document.getElementById('r-years').textContent;
+  const m=document.getElementById('r-months').textContent;
+  const d=document.getElementById('r-days').textContent;
+  const gen=document.getElementById('gen-name').textContent;
+  const zodiac=document.getElementById('wz-name').textContent;
+  const czAnimal=document.getElementById('cz-name').textContent;
+  const lpn=document.getElementById('num-life').textContent;
+  const lpName=document.getElementById('num-life-name').textContent;
+  const totalDays=document.getElementById('r-totaldays').textContent;
+  const txt=`✦ My Age: ${y} years, ${m} months, ${d} days\n`+
+    `📅 Total Days Lived: ${totalDays}\n`+
+    `🧬 Generation: ${gen}\n`+
+    `♈ Zodiac: ${zodiac}\n`+
+    `🐉 Chinese Zodiac: ${czAnimal}\n`+
+    `🔢 Life Path Number: ${lpn} – ${lpName}\n`+
+    `\nCalculated with AgeCal Pro`;
+  navigator.clipboard.writeText(txt).then(()=>toast('✓ Results copied to clipboard!'));
+}
+
+function shareResults(){
+  const y=document.getElementById('r-years').textContent;
+  const m=document.getElementById('r-months').textContent;
+  const d=document.getElementById('r-days').textContent;
+  const gen=document.getElementById('gen-name').textContent;
+  const text=`I'm exactly ${y} years, ${m} months & ${d} days old! 🎂 (${gen}) — calculated with AgeCal Pro`;
+  if(navigator.share){
+    navigator.share({title:'My Age',text}).catch(()=>{});
+  }else{
+    navigator.clipboard.writeText(text).then(()=>toast('✓ Copied for sharing!'));
+  }
+}
+
+function resetCalc(){
+  if(tickerID){clearInterval(tickerID);tickerID=null;}
+  document.getElementById('results').classList.remove('visible');
+  document.querySelectorAll('.reveal').forEach(el=>el.classList.remove('in'));
+  ['inp-day','inp-month','inp-year'].forEach(id=>{
+    const el=document.getElementById(id);
+    el.value='';el.classList.remove('err');
+  });
+  document.getElementById('err-msg').innerHTML='';
+  document.getElementById('prog-bar-80').style.width='0%';
+  document.getElementById('prog-bar-100').style.width='0%';
+  DOB=null;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ═══════════════════════════════════════════════════════
+//  CONFETTI
+// ═══════════════════════════════════════════════════════
+function spawnConfetti(){
+  const cols=['#d4af64','#e8c97a','#60a5fa','#4ade80','#f472b6','#fb923c','#ffffff'];
+  for(let i=0;i<90;i++){
+    const el=document.createElement('div');
+    el.className='cf';
+    const sz=5+Math.random()*9;
+    el.style.cssText=`left:${Math.random()*100}vw;top:-10px;`+
+      `background:${cols[Math.floor(Math.random()*cols.length)]};`+
+      `animation-duration:${2+Math.random()*2.5}s;`+
+      `animation-delay:${Math.random()*.8}s;`+
+      `width:${sz}px;height:${sz}px;`+
+      `border-radius:${Math.random()>.5?'50%':'2px'};`;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),5500);
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+//  TOAST
+// ═══════════════════════════════════════════════════════
+let toastTimer=null;
+function toast(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.classList.add('show');
+  if(toastTimer)clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>el.classList.remove('show'),3000);
+}
+
+// ═══════════════════════════════════════════════════════
+//  DOM HELPERS
+// ═══════════════════════════════════════════════════════
+function setT(id,val){const el=document.getElementById(id);if(el)el.textContent=val;}
+
+// ═══════════════════════════════════════════════════════
+//  SCROLL OBSERVER (reveal animations)
+// ═══════════════════════════════════════════════════════
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');});
+},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+// ═══════════════════════════════════════════════════════
+//  KEYBOARD
+// ═══════════════════════════════════════════════════════
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter')calculate();
+});
+</script>
+</body>
+</html>
